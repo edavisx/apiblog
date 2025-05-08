@@ -21,13 +21,6 @@ exports.getPlanesByUser = async (req, res) => {
   }
 };
 
-SELECT DISTINCT p.*
-FROM planes p
-LEFT JOIN planes_has_users pu ON p.id = pu.planes_id
-WHERE pu.users_id = 3 OR p.creador_id = 3;
-
-
-
 
 exports.getPostById = async (req, res) => {
   const { id } = req.params;
@@ -40,18 +33,18 @@ exports.getPostById = async (req, res) => {
   }
 };
 
-exports.createPost = async (req, res) => {
-  const { titulo, descripcion } = req.body;
+exports.createPlan = async (req, res) => {
+  const { titulo, descripcion, fecha, lugar, capacidad } = req.body;
   const userId = req.user.id;
   try {
     const result = await db.query(
-      'INSERT INTO posts (titulo, descripcion, user_id) VALUES ($1, $2, $3) RETURNING id',
-      [titulo, descripcion, userId]
+      'INSERT INTO planes (titulo, descripcion, fecha, lugar, capacidad, user_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id',
+      [titulo, descripcion, fecha, lugar, capacidad, userId]
     );
-    res.json({ message: 'Post creado', postId: result.rows[0].id });
+    res.json({ message: 'Plan creado', planId: result.rows[0].id });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Error al crear post' });
+    res.status(500).json({ error: 'Error al crear el plan' });
   }
 };
 
