@@ -60,7 +60,7 @@ exports.login = async (req, res) => {
 // utilizando la tabla users2
 
 exports.registerk2 = async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, nombre } = req.body;
 
   try {
     const hashed = await bcrypt.hash(password, 10);
