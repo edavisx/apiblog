@@ -1,11 +1,9 @@
 const db = require('../config/db');
 
-exports.getAllPosts = async (req, res) => {
+exports.getAllPlanes = async (req, res) => {
   try {
     const result = await db.query(`
-      SELECT posts.*, users.username 
-      FROM posts 
-      JOIN users ON posts.user_id = users.id
+      SELECT * FROM planes;
     `);
     res.json(result.rows);
   } catch (err) {
@@ -13,15 +11,23 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
-exports.getPostsByUser = async (req, res) => {
+exports.getPlanesByUser = async (req, res) => {
   const userId = req.user.id;
   try {
-    const result = await db.query('SELECT * FROM posts WHERE user_id = $1', [userId]);
+    const result = await db.query('SELECT * FROM posts WHERE user2_id = $1', [userId]);
     res.json(result.rows);
   } catch (err) {
     res.status(500).json({ error: 'Error al obtener posts del usuario' });
   }
 };
+
+SELECT DISTINCT p.*
+FROM planes p
+LEFT JOIN planes_has_users pu ON p.id = pu.planes_id
+WHERE pu.users_id = 3 OR p.creador_id = 3;
+
+
+
 
 exports.getPostById = async (req, res) => {
   const { id } = req.params;
