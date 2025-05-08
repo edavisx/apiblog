@@ -66,7 +66,7 @@ exports.registerk2 = async (req, res) => {
     const hashed = await bcrypt.hash(password, 10);
     await db.query(
       'INSERT INTO users2 (username, password, nombre) VALUES ($1, $2, $3)',
-      [username, hashed]
+      [username, hashed, nombre]
     );
 
     res.json({ message: 'Usuario registrado con éxito' });
